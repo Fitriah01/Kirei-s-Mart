@@ -377,10 +377,164 @@
         </div>
     </div>
     <script>
-    // Dummy updateStock function for demo
+    // Data stok produk (dummy, bisa diganti dengan fetch dari backend)
+    const stockData = {
+        beras: { stock: 50, el: null },
+        minyak: { stock: 8, el: null },
+        gula: { stock: 5, el: null },
+        indomie: { stock: 100, el: null },
+        kecap: { stock: 3, el: null },
+        teh: { stock: 75, el: null }
+    };
+
+    // Tambahan: Data produk lengkap untuk statistik dan warning
+    const productList = [
+        { sku: 'beras', name: 'Beras Premium 5kg', category: 'Bahan Makanan', price: 65000 },
+        { sku: 'minyak', name: 'Minyak Goreng 2L', category: 'Bahan Makanan', price: 28000 },
+        { sku: 'gula', name: 'Gula Pasir 1kg', category: 'Bahan Makanan', price: 15000 },
+        { sku: 'indomie', name: 'Indomie Goreng', category: 'Mie Instan', price: 3500 },
+        { sku: 'kecap', name: 'Kecap Manis ABC', category: 'Bumbu Masakan', price: 12000 },
+        { sku: 'teh', name: 'Teh Botol Sosro', category: 'Jajanan & Minuman', price: 4500 }
+    ];
+
+    // Helper: format rupiah
+    function formatRupiah(num) {
+        return 'Rp ' + num.toLocaleString('id-ID');
+    }
+
+    // Load stok dari localStorage jika ada
+    function loadStockFromStorage() {
+        const saved = localStorage.getItem('kireiStockData');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                for (const key in parsed) {
+                    if (stockData[key]) {
+                        stockData[key].stock = parsed[key];
+                    }
+                }
+            } catch(e) {}
+        }
+    }
+
+    // Simpan stok ke localStorage
+    function saveStockToStorage() {
+        const toSave = {};
+        for (const key in stockData) {
+            toSave[key] = stockData[key].stock;
+        }
+        localStorage.setItem('kireiStockData', JSON.stringify(toSave));
+    }
+
+    // Update statistik atas dan warning stok menipis
+    function updateStatsAndWarnings() {
+        // Statistik
+        const totalProduk = productList.length;
+        let totalStok = 0;
+        let totalNilai = 0;
+        let stokMenipis = 0;
+        let lowStockProducts = [];
+        for (const p of productList) {
+            const stok = stockData[p.sku]?.stock || 0;
+            totalStok += stok;
+            totalNilai += stok * p.price;
+            if (stok < 10) {
+                stokMenipis++;
+                lowStockProducts.push({ ...p, stock: stok });
+            }
+        }
+        // Update cards
+        const statCards = document.querySelectorAll('.stat-card');
+        if (statCards.length >= 4) {
+            statCards[0].querySelector('.stat-value').textContent = totalProduk;
+            statCards[1].querySelector('.stat-value').textContent = totalStok;
+            statCards[2].querySelector('.stat-value').textContent = formatRupiah(totalNilai);
+            statCards[3].querySelector('.stat-value').textContent = stokMenipis;
+        }
+        // Update low-stock-warning
+        const warningList = document.querySelector('.low-stock-list');
+        if (warningList) {
+            warningList.innerHTML = '';
+            if (lowStockProducts.length === 0) {
+                warningList.innerHTML = '<div style="color:#22c55e;font-weight:600;">Semua stok aman</div>';
+            } else {
+                for (const p of lowStockProducts) {
+                    const card = document.createElement('div');
+                    card.className = 'low-stock-card';
+                    card.innerHTML = `<div class="product-name">${p.name} <span class="stock-badge">Stok: ${p.stock}</span></div><div class="category">${p.category}</div>`;
+                    warningList.appendChild(card);
+                }
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadStockFromStorage();
+        // Map setiap span stok ke data
+        stockData.beras.el = document.querySelector("button[onclick*=beras] ~ span");
+        stockData.minyak.el = document.querySelector("button[onclick*=minyak] ~ span");
+        stockData.gula.el = document.querySelector("button[onclick*=gula] ~ span");
+        stockData.indomie.el = document.querySelector("button[onclick*=indomie] ~ span");
+        stockData.kecap.el = document.querySelector("button[onclick*=kecap] ~ span");
+        stockData.teh.el = document.querySelector("button[onclick*=teh] ~ span");
+        // Set nilai awal
+        for (const key in stockData) {
+            if (stockData[key].el) {
+                stockData[key].el.textContent = stockData[key].stock;
+                // Set warna dan status badge
+                const row = stockData[key].el.closest('tr');
+                if (row) {
+                    const statusTd = row.querySelector('.status-badge');
+                    if (statusTd) {
+                        if (stockData[key].stock < 10) {
+                            statusTd.textContent = 'Stok Menipis';
+                            statusTd.classList.remove('tersedia');
+                            statusTd.classList.add('menipis');
+                            stockData[key].el.style.color = '#dc2626';
+                        } else {
+                            statusTd.textContent = 'Tersedia';
+                            statusTd.classList.remove('menipis');
+                            statusTd.classList.add('tersedia');
+                            stockData[key].el.style.color = '#22c55e';
+                        }
+                    }
+                }
+            }
+        }
+        updateStatsAndWarnings(); // <-- update statistik & warning saat load
+    });
+
     function updateStock(sku, change) {
-        alert('Update stok untuk SKU: ' + sku + ', perubahan: ' + change);
-        // Implementasi nyata: update data di backend/database
+        if (!stockData[sku]) return;
+        let newStock = stockData[sku].stock + change;
+        if (newStock < 0) newStock = 0;
+        stockData[sku].stock = newStock;
+        if (stockData[sku].el) {
+            stockData[sku].el.textContent = newStock;
+            if (newStock < 10) {
+                stockData[sku].el.style.color = '#dc2626';
+            } else {
+                stockData[sku].el.style.color = '#22c55e';
+            }
+        }
+        // Update status badge
+        const row = stockData[sku].el.closest('tr');
+        if (row) {
+            const statusTd = row.querySelector('.status-badge');
+            if (statusTd) {
+                if (newStock < 10) {
+                    statusTd.textContent = 'Stok Menipis';
+                    statusTd.classList.remove('tersedia');
+                    statusTd.classList.add('menipis');
+                } else {
+                    statusTd.textContent = 'Tersedia';
+                    statusTd.classList.remove('menipis');
+                    statusTd.classList.add('tersedia');
+                }
+            }
+        }
+        saveStockToStorage();
+        updateStatsAndWarnings(); // <-- update statistik & warning setiap stok berubah
     }
     </script>
 </body>
