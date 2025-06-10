@@ -409,63 +409,52 @@ function checkout() {
     if (savedCart) {
         cart = JSON.parse(savedCart);
     }
-    
-    if (cart.length === 0) {
+    if (!cart || cart.length === 0) {
         alert('Keranjang belanja Anda kosong');
         return;
     }
-    
-    // Get customer information
+    // Get customer information (optional)
     const customerName = document.getElementById('customer-name')?.value || '';
     const customerPhone = document.getElementById('customer-phone')?.value || '';
     const customerAddress = document.getElementById('customer-address')?.value || '';
-    
-    // Validate customer information if form exists
-    const checkoutForm = document.getElementById('checkout-form');
-    if (checkoutForm) {
-        if (!customerName || !customerPhone || !customerAddress) {
-            alert('Silakan lengkapi data diri Anda');
-            return;
-        }
-    }
-    
-    // Calculate totals
+    // Calculate subtotal
     const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    // Diskon 10% jika subtotal >= 100.000
+    let discount = 0;
+    let discountText = '';
+    if (subtotal >= 100000) {
+        discount = Math.floor(subtotal * 0.10);
+        discountText = `Diskon 10%: -Rp ${discount.toLocaleString('id-ID')}`;
+    }
     const shippingCost = 10000; // Default shipping cost
-    const grandTotal = subtotal + shippingCost;
-    
+    const grandTotal = subtotal - discount + shippingCost;
     // Format cart items for WhatsApp message
     let cartItemsText = '';
     cart.forEach(item => {
         const itemSubtotal = item.price * item.quantity;
-        cartItemsText += `- ${item.name} (${item.quantity}x) @ Rp ${item.price.toLocaleString('id-ID')} = Rp ${itemSubtotal.toLocaleString('id-ID')}\n`;
+        cartItemsText += `- ${item.name} (${item.quantity}x) @ Rp ${item.price.toLocaleString('id-ID')} = Rp ${itemSubtotal.toLocaleString('id-ID')}` + "\n";
     });
-    
-    // Create WhatsApp message
+    // Compose WhatsApp message
     let message = `*PESANAN BARU - KIREI'S MART*\n\n`;
-    
-    // Add customer info if available
     if (customerName) {
         message += `*Data Pelanggan:*\n`;
         message += `Nama: ${customerName}\n`;
         message += `Telepon: ${customerPhone}\n`;
         message += `Alamat: ${customerAddress}\n\n`;
     }
-    
     message += `*Detail Pesanan:*\n`;
     message += cartItemsText;
     message += `\n*Ringkasan Pembayaran:*\n`;
     message += `Subtotal: Rp ${subtotal.toLocaleString('id-ID')}\n`;
+    if (discount > 0) {
+        message += `${discountText}\n`;
+    }
     message += `Ongkos Kirim: Rp ${shippingCost.toLocaleString('id-ID')}\n`;
     message += `Total: Rp ${grandTotal.toLocaleString('id-ID')}\n\n`;
     message += `Terima kasih telah berbelanja di Kirei's Mart!`;
-    
-    // Encode the message for URL
+    // Encode and open WhatsApp
     const encodedMessage = encodeURIComponent(message);
-    
-    // Open WhatsApp with the pre-filled message
     window.open(`https://wa.me/6287879060790?text=${encodedMessage}`, '_blank');
-    
     // Clear cart after successful checkout
     if (confirm('Pesanan Anda telah dikirim ke WhatsApp. Apakah Anda ingin mengosongkan keranjang?')) {
         clearCart();
