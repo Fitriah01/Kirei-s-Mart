@@ -19,22 +19,34 @@
   }
   
   .categories-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr); /* 6 kolom untuk 6 kategori */
-    gap: 20px;
-    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    /* Tambahan agar grid responsif dan rata kanan kiri */
+    flex-wrap: wrap;
   }
   
   .category-card {
+    flex: 1 1 160px;
+    max-width: 200px;
+    min-width: 160px;
+    margin: 0 10px;
     background-color: white;
-    padding: 30px 20px;
-    border-radius: 15px;
-    text-align: center;
-    text-decoration: none;
-    color: #333;
-    transition: all 0.3s ease;
+    border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border: 2px solid transparent;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .category-card:last-child {
+    margin-right: 0;
+  }
+  
+  .category-card:first-child {
+    margin-left: 0;
   }
   
   .category-card:hover {
@@ -934,4 +946,3 @@
       font-size: 1.1rem;
     }
   }
-  

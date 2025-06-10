@@ -18,8 +18,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const productCard = this.closest('.product-card');
             const productName = productCard.querySelector('h3').textContent;
             const productPrice = productCard.querySelector('.price').textContent;
-            const productImage = productCard.querySelector('img').src;
-            
+            // Ambil gambar dari .product-image img, bukan hanya img pertama
+            let productImage = '';
+            const imgEl = productCard.querySelector('.product-image img');
+            if (imgEl) {
+                productImage = imgEl.getAttribute('src');
+            }
             addToCart(productName, productPrice, productImage);
             
             // Show notification
@@ -329,19 +333,12 @@ function renderCartItems() {
         }
         let price = (typeof item.price === 'number' && !isNaN(item.price)) ? item.price : 0;
         const subtotal = price * qty;
-        let imageSrc = item.image;
-        if (!imageSrc || imageSrc === '' || imageSrc === 'undefined') {
-            imageSrc = 'image/placeholder.svg';
-        }
-        if (!imageSrc.startsWith('http') && !imageSrc.startsWith('/') && !imageSrc.startsWith('./')) {
-            imageSrc = './' + imageSrc;
-        }
+        // Hapus kolom foto: tidak perlu render <img> lagi
         const cartItem = document.createElement('div');
         cartItem.className = 'cart-item';
         cartItem.dataset.product = item.name;
         cartItem.innerHTML = `
             <div class="item-info">
-                <img src="${imageSrc}" alt="${item.name}" class="item-image" onerror="this.src='image/placeholder.svg'">
                 <div class="item-details">
                     <h3>${item.name}</h3>
                 </div>
