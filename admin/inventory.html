@@ -6,876 +6,382 @@
     <title>Manajemen Stok - Kirei's Mart</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
+        body {
+            background: #f8f9fa;
             margin: 0;
-            padding: 0;
-            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        body {
-            background-color: #f8f9fa;
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* Sidebar - Same as dashboard */
-        .sidebar {
-            width: 250px;
-            background-color: #333;
-            color: white;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-        
-        .sidebar-header {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid #444;
-        }
-        
-        .sidebar-header h1 {
-            color: #ff6b6b;
-            font-size: 1.5em;
-            margin-bottom: 5px;
-        }
-        
-        .sidebar-header p {
-            color: #bbb;
-            font-size: 0.8em;
-        }
-        
-        .sidebar-menu {
-            padding: 20px 0;
-        }
-        
-        .sidebar-menu h3 {
+        .inventory-container {
+            max-width: 1200px;
+            margin: 30px auto;
             padding: 0 20px;
-            font-size: 0.8em;
-            text-transform: uppercase;
-            color: #bbb;
-            margin-bottom: 10px;
         }
-        
-        .sidebar-menu ul {
-            list-style: none;
-        }
-        
-        .sidebar-menu ul li {
-            margin-bottom: 5px;
-        }
-        
-        .sidebar-menu ul li a {
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
-            color: #ddd;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .sidebar-menu ul li a:hover, .sidebar-menu ul li a.active {
-            background-color: #444;
-            color: white;
-        }
-        
-        .sidebar-menu ul li a i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
-        
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 250px;
-            padding: 20px;
-        }
-        
-        /* Top Bar */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: white;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        
-        .page-title h2 {
-            font-size: 1.5em;
-            color: #333;
-        }
-        
-        .top-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary {
-            background-color: #ff6b6b;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: #ff5252;
-        }
-        
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-        
-        /* Filters */
-        .filters-section {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        
-        .filters-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            align-items: end;
-        }
-        
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .filter-group label {
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #555;
-        }
-        
-        .filter-group input, .filter-group select {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            outline: none;
-        }
-        
-        .filter-group input:focus, .filter-group select:focus {
-            border-color: #ff6b6b;
-        }
-        
-        /* Inventory Table */
-        .inventory-section {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        
         .inventory-header {
-            padding: 20px;
-            border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            margin-bottom: 30px;
         }
-        
-        .inventory-header h3 {
-            font-size: 1.2em;
-            color: #333;
+        .inventory-title {
+            font-size: 2em;
+            font-weight: 700;
+            color: #2563eb;
         }
-        
-        .inventory-stats {
+        .admin-info {
+            text-align: right;
+        }
+        .admin-info .admin-name {
+            font-weight: 600;
+        }
+        .admin-info .logout-btn {
+            background: #fff;
+            color: #dc2626;
+            border: 1px solid #dc2626;
+            border-radius: 6px;
+            padding: 6px 18px;
+            font-weight: 600;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .admin-info .logout-btn:hover {
+            background: #dc2626;
+            color: #fff;
+        }
+        .stats-row {
             display: flex;
             gap: 20px;
-            font-size: 0.9em;
-            color: #777;
+            margin-bottom: 30px;
         }
-        
-        .inventory-table {
+        .stat-card {
+            flex: 1;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .stat-title {
+            color: #888;
+            font-size: 1em;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        .stat-value.orange { color: #ea580c; }
+        .stat-value.red { color: #dc2626; }
+        .stat-desc { color: #888; font-size: 0.95em; }
+        .low-stock-warning {
+            background: #fdecec;
+            border-radius: 12px;
+            padding: 24px 20px;
+            margin-bottom: 30px;
+        }
+        .low-stock-title {
+            color: #b91c1c;
+            font-weight: 700;
+            font-size: 1.2em;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .low-stock-list {
+            display: flex;
+            gap: 16px;
+        }
+        .low-stock-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 14px 18px;
+            min-width: 180px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .low-stock-card .product-name {
+            color: #b91c1c;
+            font-weight: 600;
+        }
+        .low-stock-card .stock-badge {
+            background: #dc2626;
+            color: #fff;
+            border-radius: 12px;
+            padding: 2px 12px;
+            font-size: 0.9em;
+            margin-left: 8px;
+        }
+        .low-stock-card .category {
+            color: #888;
+            font-size: 0.95em;
+        }
+        .stock-table-section {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 24px 20px;
+        }
+        .stock-table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 10px;
         }
-        
-        .inventory-table th, .inventory-table td {
-            padding: 15px;
+        .stock-table th, .stock-table td {
+            padding: 12px 10px;
             text-align: left;
-            border-bottom: 1px solid #eee;
         }
-        
-        .inventory-table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
+        .stock-table th {
+            background: #f3f4f6;
             color: #333;
-            position: sticky;
-            top: 0;
+            font-weight: 700;
         }
-        
-        .inventory-table td {
-            color: #555;
+        .stock-table tr {
+            border-bottom: 1px solid #f1f1f1;
         }
-        
-        .product-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .stock-table tr:last-child {
+            border-bottom: none;
         }
-        
-        .product-image {
-            width: 40px;
-            height: 40px;
-            border-radius: 4px;
-            object-fit: cover;
-        }
-        
-        .product-details h4 {
-            font-size: 0.9em;
-            margin-bottom: 2px;
-            color: #333;
-        }
-        
-        .product-details p {
-            font-size: 0.8em;
-            color: #777;
-        }
-        
-        .stock-status {
+        .category-badge {
             display: inline-block;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.8em;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 8px;
+            padding: 2px 10px;
+            font-size: 0.95em;
             font-weight: 600;
         }
-        
-        .stock-status.in-stock {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        
-        .stock-status.low-stock {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-        
-        .stock-status.out-of-stock {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        
-        .stock-status.expired {
-            background-color: #f5c6cb;
-            color: #721c24;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-        }
-        
-        .btn-sm {
-            padding: 5px 8px;
-            font-size: 0.8em;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .btn-edit {
-            background-color: #007bff;
-            color: white;
-        }
-        
-        .btn-edit:hover {
-            background-color: #0056b3;
-        }
-        
-        .btn-delete {
-            background-color: #dc3545;
-            color: white;
-        }
-        
-        .btn-delete:hover {
-            background-color: #c82333;
-        }
-        
-        .btn-restock {
-            background-color: #28a745;
-            color: white;
-        }
-        
-        .btn-restock:hover {
-            background-color: #1e7e34;
-        }
-        
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            gap: 10px;
-        }
-        
-        .pagination button {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            background-color: white;
-            color: #333;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .pagination button:hover, .pagination button.active {
-            background-color: #ff6b6b;
-            color: white;
-            border-color: #ff6b6b;
-        }
-        
-        .pagination button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 20px;
+        .category-badge.bumbu { background: #fef9c3; color: #b45309; }
+        .category-badge.mie { background: #e0e7ff; color: #6366f1; }
+        .category-badge.jajanan { background: #cffafe; color: #0891b2; }
+        .category-badge.bahan { background: #dbeafe; color: #2563eb; }
+        .status-badge {
+            display: inline-block;
             border-radius: 8px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
+            padding: 2px 14px;
+            font-size: 0.95em;
+            font-weight: 600;
         }
-        
-        .modal-header {
+        .status-badge.tersedia { background: #2563eb; color: #fff; }
+        .status-badge.menipis { background: #dc2626; color: #fff; }
+        .stock-actions {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            gap: 6px;
         }
-        
-        .modal-header h3 {
-            color: #333;
-        }
-        
-        .close {
-            font-size: 1.5em;
+        .stock-btn {
+            border: none;
+            background: #f3f4f6;
+            color: #2563eb;
+            font-size: 1.1em;
+            border-radius: 6px;
+            width: 32px;
+            height: 32px;
             cursor: pointer;
-            color: #999;
+            font-weight: 700;
+            transition: background 0.2s, color 0.2s;
         }
-        
-        .close:hover {
-            color: #333;
+        .stock-btn:hover { background: #2563eb; color: #fff; }
+        .edit-btn, .delete-btn {
+            border: none;
+            background: none;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-left: 6px;
         }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #555;
-        }
-        
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            outline: none;
-        }
-        
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            border-color: #ff6b6b;
-        }
-        
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        /* Responsive */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 70px;
-            }
-            
-            .sidebar-header h1, .sidebar-header p {
-                display: none;
-            }
-            
-            .sidebar-menu h3 {
-                display: none;
-            }
-            
-            .sidebar-menu ul li a span {
-                display: none;
-            }
-            
-            .sidebar-menu ul li a i {
-                margin-right: 0;
-                font-size: 1.2em;
-            }
-            
-            .main-content {
-                margin-left: 70px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .top-bar {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-            
-            .filters-row {
-                grid-template-columns: 1fr;
-            }
-            
-            .inventory-table {
-                font-size: 0.8em;
-            }
-            
-            .inventory-table th, .inventory-table td {
-                padding: 10px 8px;
-            }
+        .edit-btn { color: #2563eb; }
+        .edit-btn:hover { color: #1d4ed8; }
+        .delete-btn { color: #dc2626; }
+        .delete-btn:hover { color: #b91c1c; }
+        @media (max-width: 900px) {
+            .stats-row, .low-stock-list { flex-direction: column; gap: 12px; }
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h1>Kirei's Mart</h1>
-            <p>Admin Panel</p>
-        </div>
-        
-        <div class="sidebar-menu">
-            <h3>Menu Utama</h3>
-            <ul>
-                <li><a href="inventory.html" class="active"><i class="fas fa-box"></i> <span>Manajemen Stok</span></a></li>
-            </ul>
-        </div>
-    </div>
-    
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Top Bar -->
-        <div class="top-bar">
-            <div class="page-title">
-                <h2>Manajemen Stok</h2>
+    <div class="inventory-container">
+        <div class="inventory-header">
+            <div>
+                <div class="inventory-title">Kirei's Mart - Manajemen Stok</div>
+                <div style="color:#888; font-size:1.1em; margin-top:4px;">Kelola inventori dan stok produk</div>
             </div>
-            <div class="top-actions">
-                <button class="btn btn-secondary" onclick="exportInventory()">
-                    <i class="fas fa-download"></i> Export
-                </button>
-                <button class="btn btn-primary" onclick="openAddStockModal()">
-                    <i class="fas fa-plus"></i> Tambah Stok
-                </button>
+            <div class="admin-info">
+                <div class="admin-name">Admin Kirei</div>
+                <div style="font-size:0.95em; color:#888;">Administrator</div>
+                <button class="logout-btn">Keluar</button>
             </div>
         </div>
-        
-        <!-- Filters -->
-        <div class="filters-section">
-            <div class="filters-row">
-                <div class="filter-group">
-                    <label for="search">Cari Produk</label>
-                    <input type="text" id="search" placeholder="Nama produk atau SKU...">
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-title">Total Produk</div>
+                <div class="stat-value">6</div>
+                <div class="stat-desc">Produk aktif</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Total Stok</div>
+                <div class="stat-value">238</div>
+                <div class="stat-desc">Unit tersedia</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Nilai Inventori</div>
+                <div class="stat-value orange">Rp 4.2JT</div>
+                <div class="stat-desc">Total nilai stok</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Stok Menipis</div>
+                <div class="stat-value red">3</div>
+                <div class="stat-desc">Perlu restok</div>
+            </div>
+        </div>
+        <div class="low-stock-warning">
+            <div class="low-stock-title"><i class="fas fa-exclamation-triangle"></i> Peringatan Stok Menipis</div>
+            <div class="low-stock-list">
+                <div class="low-stock-card">
+                    <div class="product-name">Minyak Goreng 2L <span class="stock-badge">Stok: 7</span></div>
+                    <div class="category">Bahan Makanan</div>
                 </div>
-                <div class="filter-group">
-                    <label for="category">Kategori</label>
-                    <select id="category">
-                        <option value="">Semua Kategori</option>
-                        <option value="beras">Beras & Minyak</option>
-                        <option value="bumbu">Bumbu Dapur</option>
-                        <option value="minuman">Minuman</option>
-                        <option value="makanan">Makanan Ringan</option>
-                        <option value="kebersihan">Perlengkapan Kebersihan</option>
-                    </select>
+                <div class="low-stock-card">
+                    <div class="product-name">Gula Pasir 1kg <span class="stock-badge">Stok: 4</span></div>
+                    <div class="category">Bahan Makanan</div>
                 </div>
-                <div class="filter-group">
-                    <label for="status">Status Stok</label>
-                    <select id="status">
-                        <option value="">Semua Status</option>
-                        <option value="in-stock">Tersedia</option>
-                        <option value="low-stock">Stok Rendah</option>
-                        <option value="out-of-stock">Stok Habis</option>
-                        <option value="expired">Kadaluarsa</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <button class="btn btn-primary" onclick="applyFilters()">
-                        <i class="fas fa-search"></i> Filter
-                    </button>
+                <div class="low-stock-card">
+                    <div class="product-name">Kecap Manis ABC <span class="stock-badge">Stok: 4</span></div>
+                    <div class="category">Bumbu Masakan</div>
                 </div>
             </div>
         </div>
-        
-        <!-- Inventory Table -->
-        <div class="inventory-section">
-            <div class="inventory-header">
-                <h3>Daftar Stok Produk</h3>
-                <div class="inventory-stats">
-                    <span>Total: 158 produk</span>
-                    <span>Stok Rendah: 12 produk</span>
-                    <span>Kadaluarsa: 3 produk</span>
-                </div>
-            </div>
-            
-            <table class="inventory-table">
+        <div class="stock-table-section">
+            <table class="stock-table">
                 <thead>
                     <tr>
-                        <th>Produk</th>
-                        <th>SKU</th>
+                        <th>Nama Produk</th>
                         <th>Kategori</th>
+                        <th>Harga</th>
                         <th>Stok</th>
-                        <th>Harga Beli</th>
-                        <th>Harga Jual</th>
-                        <th>Tanggal Masuk</th>
-                        <th>Tanggal Kadaluarsa</th>
                         <th>Status</th>
+                        <th>Terakhir Update</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
-                            <div class="product-info">
-                                <div class="product-details">
-                                    <h4>Beras Premium 5kg</h4>
-                                    <p>Beras berkualitas tinggi</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>BRS-001</td>
-                        <td>Beras & Minyak</td>
-                        <td>8 unit</td>
-                        <td>Rp 58.000</td>
+                        <td>Beras Premium 5kg</td>
+                        <td><span class="category-badge bahan">Bahan Makanan</span></td>
                         <td>Rp 65.000</td>
-                        <td>15/11/2023</td>
-                        <td>15/05/2024</td>
-                        <td><span class="stock-status low-stock">Stok Rendah</span></td>
                         <td>
-                            <div class="action-buttons">
-                                <button class="btn-sm btn-restock" onclick="openRestockModal('BRS-001')">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button class="btn-sm btn-edit" onclick="openEditModal('BRS-001')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-sm btn-delete" onclick="deleteProduct('BRS-001')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                            <div class="stock-actions">
+                                <button class="stock-btn" onclick="updateStock('beras',-1)"><i class="fas fa-minus"></i></button>
+                                <span style="font-weight:600;color:#22c55e;">50</span>
+                                <button class="stock-btn" onclick="updateStock('beras',1)"><i class="fas fa-plus"></i></button>
                             </div>
+                        </td>
+                        <td><span class="status-badge tersedia">Tersedia</span></td>
+                        <td>9/6/2025, 07.16.16</td>
+                        <td>
+                            <button class="edit-btn" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button class="delete-btn" title="Hapus"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr style="background:#fef2f2;">
+                        <td>Minyak Goreng 2L</td>
+                        <td><span class="category-badge bahan">Bahan Makanan</span></td>
+                        <td>Rp 28.000</td>
+                        <td>
+                            <div class="stock-actions">
+                                <button class="stock-btn" onclick="updateStock('minyak',-1)"><i class="fas fa-minus"></i></button>
+                                <span style="font-weight:600;color:#dc2626;">8</span>
+                                <button class="stock-btn" onclick="updateStock('minyak',1)"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </td>
+                        <td><span class="status-badge menipis">Stok Menipis</span></td>
+                        <td>9/6/2025, 07.16.16</td>
+                        <td>
+                            <button class="edit-btn" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button class="delete-btn" title="Hapus"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr style="background:#fef2f2;">
+                        <td>Gula Pasir 1kg</td>
+                        <td><span class="category-badge bahan">Bahan Makanan</span></td>
+                        <td>Rp 15.000</td>
+                        <td>
+                            <div class="stock-actions">
+                                <button class="stock-btn" onclick="updateStock('gula',-1)"><i class="fas fa-minus"></i></button>
+                                <span style="font-weight:600;color:#dc2626;">5</span>
+                                <button class="stock-btn" onclick="updateStock('gula',1)"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </td>
+                        <td><span class="status-badge menipis">Stok Menipis</span></td>
+                        <td>9/6/2025, 07.16.16</td>
+                        <td>
+                            <button class="edit-btn" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button class="delete-btn" title="Hapus"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                     <tr>
+                        <td>Indomie Goreng</td>
+                        <td><span class="category-badge mie">Mie Instan</span></td>
+                        <td>Rp 3.500</td>
                         <td>
-                            <div class="product-info">
-                                <div class="product-details">
-                                    <h4>Minyak Goreng 2L</h4>
-                                    <p>Minyak goreng berkualitas</p>
-                                </div>
+                            <div class="stock-actions">
+                                <button class="stock-btn" onclick="updateStock('indomie',-1)"><i class="fas fa-minus"></i></button>
+                                <span style="font-weight:600;color:#22c55e;">100</span>
+                                <button class="stock-btn" onclick="updateStock('indomie',1)"><i class="fas fa-plus"></i></button>
                             </div>
                         </td>
-                        <td>MYK-001</td>
-                        <td>Beras & Minyak</td>
-                        <td>45 unit</td>
-                        <td>Rp 32.000</td>
-                        <td>Rp 35.000</td>
-                        <td>20/11/2023</td>
-                        <td>20/11/2024</td>
-                        <td><span class="stock-status in-stock">Tersedia</span></td>
+                        <td><span class="status-badge tersedia">Tersedia</span></td>
+                        <td>9/6/2025, 07.16.16</td>
                         <td>
-                            <div class="action-buttons">
-                                <button class="btn-sm btn-restock" onclick="openRestockModal('MYK-001')">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button class="btn-sm btn-edit" onclick="openEditModal('MYK-001')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-sm btn-delete" onclick="deleteProduct('MYK-001')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
+                            <button class="edit-btn" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button class="delete-btn" title="Hapus"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <div class="product-info">
-                                <div class="product-details">
-                                    <h4>Kecap Manis Bango 600ml</h4>
-                                    <p>Kecap manis premium</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>KCP-001</td>
-                        <td>Bumbu Dapur</td>
-                        <td>15 unit</td>
-                        <td>Rp 22.000</td>
-                        <td>Rp 25.000</td>
-                        <td>18/11/2023</td>
-                        <td>18/11/2025</td>
-                        <td><span class="stock-status low-stock">Stok Rendah</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-sm btn-restock" onclick="openRestockModal('KCP-001')">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button class="btn-sm btn-edit" onclick="openEditModal('KCP-001')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-sm btn-delete" onclick="deleteProduct('KCP-001')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="product-info">
-                                <div class="product-details">
-                                    <h4>Teh Celup Sariwangi 25 Bags</h4>
-                                    <p>Teh celup berkualitas</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>TEH-001</td>
-                        <td>Minuman</td>
-                        <td>0 unit</td>
-                        <td>Rp 7.500</td>
-                        <td>Rp 8.500</td>
-                        <td>10/11/2023</td>
-                        <td>10/11/2025</td>
-                        <td><span class="stock-status out-of-stock">Stok Habis</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-sm btn-restock" onclick="openRestockModal('TEH-001')">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button class="btn-sm btn-edit" onclick="openEditModal('TEH-001')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-sm btn-delete" onclick="deleteProduct('TEH-001')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="product-info">
-                                <div class="product-details">
-                                    <h4>Mie Instan Indomie Goreng 5pcs</h4>
-                                    <p>Mie instan favorit</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>MIE-001</td>
-                        <td>Makanan Ringan</td>
-                        <td>25 unit</td>
+                    <tr style="background:#fef2f2;">
+                        <td>Kecap Manis ABC</td>
+                        <td><span class="category-badge bumbu">Bumbu Masakan</span></td>
                         <td>Rp 12.000</td>
-                        <td>Rp 13.500</td>
-                        <td>05/10/2023</td>
-                        <td>05/04/2024</td>
-                        <td><span class="stock-status expired">Kadaluarsa</span></td>
                         <td>
-                            <div class="action-buttons">
-                                <button class="btn-sm btn-restock" onclick="openRestockModal('MIE-001')">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button class="btn-sm btn-edit" onclick="openEditModal('MIE-001')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-sm btn-delete" onclick="deleteProduct('MIE-001')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                            <div class="stock-actions">
+                                <button class="stock-btn" onclick="updateStock('kecap',-1)"><i class="fas fa-minus"></i></button>
+                                <span style="font-weight:600;color:#dc2626;">3</span>
+                                <button class="stock-btn" onclick="updateStock('kecap',1)"><i class="fas fa-plus"></i></button>
                             </div>
+                        </td>
+                        <td><span class="status-badge menipis">Stok Menipis</span></td>
+                        <td>9/6/2025, 07.16.16</td>
+                        <td>
+                            <button class="edit-btn" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button class="delete-btn" title="Hapus"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Teh Botol Sosro</td>
+                        <td><span class="category-badge jajanan">Jajanan & Minuman</span></td>
+                        <td>Rp 4.500</td>
+                        <td>
+                            <div class="stock-actions">
+                                <button class="stock-btn" onclick="updateStock('teh',-1)"><i class="fas fa-minus"></i></button>
+                                <span style="font-weight:600;color:#22c55e;">75</span>
+                                <button class="stock-btn" onclick="updateStock('teh',1)"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </td>
+                        <td><span class="status-badge tersedia">Tersedia</span></td>
+                        <td>9/6/2025, 07.16.16</td>
+                        <td>
+                            <button class="edit-btn" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button class="delete-btn" title="Hapus"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            
-            <div class="pagination">
-                <button disabled><i class="fas fa-chevron-left"></i></button>
-                <button class="active">1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>4</button>
-                <button>5</button>
-                <button><i class="fas fa-chevron-right"></i></button>
-            </div>
         </div>
     </div>
-    
-    <!-- Add/Restock Modal -->
-    <div id="stockModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Tambah Stok</h3>
-                <span class="close" onclick="closeModal()">&times;</span>
-            </div>
-            <form id="stockForm">
-                <div class="form-group">
-                    <label for="productName">Nama Produk</label>
-                    <input type="text" id="productName" required>
-                </div>
-                <div class="form-group">
-                    <label for="sku">SKU</label>
-                    <input type="text" id="sku" required>
-                </div>
-                <div class="form-group">
-                    <label for="quantity">Jumlah</label>
-                    <input type="number" id="quantity" min="1" required>
-                </div>
-                <div class="form-group">
-                    <label for="buyPrice">Harga Beli</label>
-                    <input type="number" id="buyPrice" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label for="sellPrice">Harga Jual</label>
-                    <input type="number" id="sellPrice" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label for="expiryDate">Tanggal Kadaluarsa</label>
-                    <input type="date" id="expiryDate" required>
-                </div>
-                <div class="form-group">
-                    <label for="notes">Catatan</label>
-                    <textarea id="notes" rows="3" placeholder="Catatan tambahan..."></textarea>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    
     <script>
-        // Modal functions
-        function openAddStockModal() {
-            document.getElementById('modalTitle').textContent = 'Tambah Stok Baru';
-            document.getElementById('stockForm').reset();
-            document.getElementById('stockModal').style.display = 'block';
-        }
-        
-        function openRestockModal(sku) {
-            document.getElementById('modalTitle').textContent = 'Tambah Stok Produk';
-            // Pre-fill form with existing product data
-            document.getElementById('sku').value = sku;
-            document.getElementById('stockModal').style.display = 'block';
-        }
-        
-        function openEditModal(sku) {
-            document.getElementById('modalTitle').textContent = 'Edit Produk';
-            // Pre-fill form with existing product data
-            document.getElementById('sku').value = sku;
-            document.getElementById('stockModal').style.display = 'block';
-        }
-        
-        function closeModal() {
-            document.getElementById('stockModal').style.display = 'none';
-        }
-        
-        function deleteProduct(sku) {
-            if (confirm('Apakah Anda yakin ingin menghapus produk ini?')) {
-                alert('Produk ' + sku + ' berhasil dihapus');
-                // In real application, make API call to delete product
-            }
-        }
-        
-        function applyFilters() {
-            const search = document.getElementById('search').value;
-            const category = document.getElementById('category').value;
-            const status = document.getElementById('status').value;
-            
-            console.log('Applying filters:', { search, category, status });
-            // In real application, filter the table data
-        }
-        
-        function exportInventory() {
-            alert('Export inventory data...');
-            // In real application, generate and download Excel/CSV file
-        }
-        
-        // Form submission
-        document.getElementById('stockForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            console.log('Saving stock data:', data);
-            alert('Data stok berhasil disimpan!');
-            closeModal();
-            
-            // In real application, send data to server
-        });
-        
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('stockModal');
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
-        
-        // Real-time search
-        document.getElementById('search').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            // In real application, filter table rows based on search term
-            console.log('Searching for:', searchTerm);
-        });
-        
-        // Placeholder: Fungsi sinkronisasi stok otomatis
-        // Fungsi ini seharusnya dipanggil setiap ada transaksi checkout atau penambahan barang
-        function syncStock(sku, change) {
-            // change: jumlah perubahan stok (positif = tambah, negatif = berkurang)
-            // TODO: Integrasi dengan sistem transaksi/checkout
-            console.log(`Sync stok untuk SKU ${sku}, perubahan: ${change}`);
-            // Update stok di tabel (dummy, implementasi nyata perlu backend/database)
-        }
+    // Dummy updateStock function for demo
+    function updateStock(sku, change) {
+        alert('Update stok untuk SKU: ' + sku + ', perubahan: ' + change);
+        // Implementasi nyata: update data di backend/database
+    }
     </script>
 </body>
 </html>
