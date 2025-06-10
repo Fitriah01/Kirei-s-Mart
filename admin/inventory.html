@@ -493,26 +493,7 @@
         <div class="sidebar-menu">
             <h3>Menu Utama</h3>
             <ul>
-                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
                 <li><a href="inventory.html" class="active"><i class="fas fa-box"></i> <span>Manajemen Stok</span></a></li>
-                <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> <span>Pesanan</span></a></li>
-                <li><a href="products.html"><i class="fas fa-tags"></i> <span>Produk</span></a></li>
-                <li><a href="categories.html"><i class="fas fa-list"></i> <span>Kategori</span></a></li>
-                <li><a href="customers.html"><i class="fas fa-users"></i> <span>Pelanggan</span></a></li>
-            </ul>
-            
-            <h3>Laporan</h3>
-            <ul>
-                <li><a href="sales-report.html"><i class="fas fa-chart-line"></i> <span>Laporan Penjualan</span></a></li>
-                <li><a href="inventory-report.html"><i class="fas fa-clipboard-list"></i> <span>Laporan Stok</span></a></li>
-                <li><a href="expiry-report.html"><i class="fas fa-calendar-times"></i> <span>Laporan Kadaluarsa</span></a></li>
-            </ul>
-            
-            <h3>Pengaturan</h3>
-            <ul>
-                <li><a href="settings.html"><i class="fas fa-cog"></i> <span>Pengaturan</span></a></li>
-                <li><a href="users.html"><i class="fas fa-user-cog"></i> <span>Pengguna</span></a></li>
-                <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
             </ul>
         </div>
     </div>
@@ -886,6 +867,15 @@
             // In real application, filter table rows based on search term
             console.log('Searching for:', searchTerm);
         });
+        
+        // Placeholder: Fungsi sinkronisasi stok otomatis
+        // Fungsi ini seharusnya dipanggil setiap ada transaksi checkout atau penambahan barang
+        function syncStock(sku, change) {
+            // change: jumlah perubahan stok (positif = tambah, negatif = berkurang)
+            // TODO: Integrasi dengan sistem transaksi/checkout
+            console.log(`Sync stok untuk SKU ${sku}, perubahan: ${change}`);
+            // Update stok di tabel (dummy, implementasi nyata perlu backend/database)
+        }
     </script>
 </body>
 </html>

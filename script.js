@@ -277,11 +277,7 @@ function updateCartTotal() {
 function renderCartItems() {
     const cartItemsContainer = document.querySelector('.cart-items');
     if (!cartItemsContainer) return;
-    
-    // Clear existing content
     cartItemsContainer.innerHTML = '';
-    
-    // Add header back
     const cartHeader = document.createElement('div');
     cartHeader.className = 'cart-header';
     cartHeader.innerHTML = `
@@ -292,15 +288,27 @@ function renderCartItems() {
         <div></div>
     `;
     cartItemsContainer.appendChild(cartHeader);
-    
-    // Get cart from localStorage
-    const savedCart = localStorage.getItem('kireiCart');
-    if (savedCart) {
-        cart = JSON.parse(savedCart);
+    let savedCartRaw = localStorage.getItem('kireiCart');
+    let cartData = [];
+    if (savedCartRaw) {
+        try {
+            cartData = JSON.parse(savedCartRaw);
+        } catch (e) {
+            cartData = [];
+        }
     }
-    
-    // If cart is empty
-    if (cart.length === 0) {
+    // Bersihkan item yang price null/NaN
+    let changed = false;
+    cartData.forEach(item => {
+        if (typeof item.price !== 'number' || isNaN(item.price) || item.price === null) {
+            item.price = 0;
+            changed = true;
+        }
+    });
+    if (changed) {
+        localStorage.setItem('kireiCart', JSON.stringify(cartData));
+    }
+    if (!Array.isArray(cartData) || cartData.length === 0) {
         const emptyCart = document.createElement('div');
         emptyCart.className = 'empty-cart';
         emptyCart.innerHTML = `
@@ -309,57 +317,48 @@ function renderCartItems() {
             <p>Silakan tambahkan produk ke keranjang</p>
         `;
         cartItemsContainer.appendChild(emptyCart);
-        
-        // Update totals for empty cart
         updateCartTotal();
         updateCheckoutButton();
         return;
     }
-    
-    // Render each cart item
+    cart = cartData; // update global cart
     cart.forEach(item => {
-        const cartItem = document.createElement('div');
-        cartItem.className = 'cart-item';
-        cartItem.dataset.product = item.name;
-        
-        const subtotal = item.price * item.quantity;
-        
-        // Pastikan path gambar benar dan tambahkan fallback
+        let qty = (typeof item.quantity === 'number' && item.quantity > 0) ? item.quantity : 1;
+        if (!item.quantity || item.quantity < 1) {
+            item.quantity = 1;
+        }
+        let price = (typeof item.price === 'number' && !isNaN(item.price)) ? item.price : 0;
+        const subtotal = price * qty;
         let imageSrc = item.image;
         if (!imageSrc || imageSrc === '' || imageSrc === 'undefined') {
-            imageSrc = '/placeholder.svg?height=80&width=80';
+            imageSrc = 'image/placeholder.svg';
         }
-        
-        // Jika gambar tidak dimulai dengan http atau /, tambahkan ./
         if (!imageSrc.startsWith('http') && !imageSrc.startsWith('/') && !imageSrc.startsWith('./')) {
             imageSrc = './' + imageSrc;
         }
-        
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        cartItem.dataset.product = item.name;
         cartItem.innerHTML = `
             <div class="item-info">
-                <img src="${imageSrc}" alt="${item.name}" class="item-image" onerror="this.src='/placeholder.svg?height=80&width=80'">
+                <img src="${imageSrc}" alt="${item.name}" class="item-image" onerror="this.src='image/placeholder.svg'">
                 <div class="item-details">
                     <h3>${item.name}</h3>
                 </div>
             </div>
-            <div class="item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
+            <div class="item-price">Rp ${price.toLocaleString('id-ID')}</div>
             <div class="item-quantity">
                 <button class="quantity-btn" data-action="decrease">-</button>
-                <span class="quantity-value">${item.quantity}</span>
+                <span class="quantity-value">${qty}</span>
                 <button class="quantity-btn" data-action="increase">+</button>
             </div>
             <div class="item-subtotal">Rp ${subtotal.toLocaleString('id-ID')}</div>
             <button class="remove-item"><i class="fas fa-times"></i></button>
         `;
-        
         cartItemsContainer.appendChild(cartItem);
     });
-    
-    // Setup quantity buttons and remove buttons
     setupCartQuantityButtons();
     setupRemoveFromCartButtons();
-    
-    // Update cart total
     updateCartTotal();
     updateCartCount();
     updateCheckoutButton();
